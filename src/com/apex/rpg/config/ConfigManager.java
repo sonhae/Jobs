@@ -9,6 +9,8 @@ public class ConfigManager {
 	private static RPG rpg;
 	private static FileConfiguration config;
 	public static String MYSQL_HOST, MYSQL_PASSWORD, MYSQL_USER, MYSQL_DATABASE, MYSQL_PORT, MYSQL_PREFIX;
+	public static int MAX_LEVEL;
+	public static boolean USE_CACHE;
 	
 	public ConfigManager(RPG pl){
 		rpg = pl;

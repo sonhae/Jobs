@@ -3,17 +3,21 @@ package com.apex.rpg.datatype;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.apex.rpg.RPG;
+import com.apex.rpg.config.ConfigManager;
 import com.apex.rpg.jobs.JobType;
 
 public class PlayerProfile {
 	private Map<JobType, Integer> jobLevel;
 	private Map<JobType, Float> jobXP;
+	private boolean changed;
 	
 	public PlayerProfile(Map<JobType, Integer> jobLevel, Map<JobType, Float> jobXP, String UUID) {
 		super();
 		this.jobLevel = jobLevel;
 		this.jobXP = jobXP;
 		this.UUID = UUID;
+		changed = false;
 	}
 	public PlayerProfile(String uuid){
 		super();
@@ -29,23 +33,54 @@ public class PlayerProfile {
 		return UUID;
 	}
 	private String UUID;
-	
+
+	public float getJobsXP(JobType type){
+		return jobXP.get(type);
+	}
+	public float getXpToLevelup(JobType type){
+		int lvl = (jobLevel.get(type));
+		return ((3 * lvl + 2) * lvl * 100) + lvl;
+	}
+	public boolean reachedMaxLevel(JobType type){
+		return getJobsLevel(type) >= ConfigManager.MAX_LEVEL;
+	}
+	public void levelUp(JobType type){
+		changed = true;
+		float xp = getXpToLevelup(type);
+		jobLevel.put(type, jobLevel.get(type) + 1);
+		jobXP.put(type,  jobXP.get(type) - xp);
+	}
 	public int getJobsLevel(JobType type){
 		return jobLevel.get(type);
 	}
 	public void addLevel(JobType type, int level){
+		if (reachedMaxLevel(type))return;
 		int lvl = (jobLevel.get(type) + level);
-		jobLevel.put(type, (lvl > 100) ? 100 : lvl);
+		if (lvl >= ConfigManager.MAX_LEVEL) lvl= ConfigManager.MAX_LEVEL;
+		modifyJobs(type, lvl);
 	}
 	public void removeLevel(JobType type, int level){
 		int lvl = ((jobLevel.get(type) - level));
-		jobLevel.put(type, (lvl < 0) ? 0 : lvl);
+		modifyJobs(type, (lvl < 0) ? 0 : lvl);
 	}
-	public void setLevel(JobType type, int level){
-		if (level < 0 || level > 100) return;
-		jobLevel.put(type, level);
+	public void modifyJobs(JobType job, int level){
+		changed = true;
+		if (level < 0) level = 0;
+		jobLevel.put(job, level);
+		jobXP.put(job, 0.0f);
+	}
+	public void addXp(JobType type, float xp){
+		changed = true;
+		jobXP.put(type, jobXP.get(type)+ xp);
+	}
+	public void setXp(JobType type, float xp){
+		changed = true;
+		jobXP.put(type, xp);
 	}
 	public void save(){
-		 
+		 if (changed)RPG.getDatabaseManager().saveProfile(this);
+	}
+	public boolean isChanged() {
+		return changed;
 	}
 }

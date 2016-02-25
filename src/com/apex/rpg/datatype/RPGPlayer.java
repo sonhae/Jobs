@@ -33,6 +33,22 @@ public class RPGPlayer {
 		}
 		
 	}
+	public void checkLevelUp(JobType type){
+		if (profile.getJobsXP(type) < profile.getXpToLevelup(type)){
+			return;
+		}
+		
+		int levelgained = 0;
+		
+		while (profile.getJobsXP(type) >= profile.getXpToLevelup(type)){
+			if (profile.reachedMaxLevel(type)) {
+				profile.setXp(type, 0.0f);
+				break;
+			}
+			profile.levelUp(type);
+			levelgained++;
+		}
+	}
 	public Player getPlayer() {
 		return player;
 	}

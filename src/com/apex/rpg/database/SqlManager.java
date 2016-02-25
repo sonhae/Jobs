@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 import java.util.EnumMap;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.apex.rpg.RPG;
@@ -65,9 +64,37 @@ public class SqlManager implements DatabaseManager {
 		}
 	}
 
-	public void saveProfile(PlayerProfile player) {
+	public boolean saveProfile(PlayerProfile player) {
 		// TODO Auto-generated method stub
-
+		PreparedStatement st = null;
+		try {
+			String query = "UPDATE `" + prefix + "expreiences` a, `" + prefix + "levels` b, `" + prefix + "users` "
+					+ "SET a.alchemist=?, a.builder=?, a.farmer=?, a.fisher=?, a.hunter=?, a.miner=?,"
+					+ "b.alchemist=?, b.builder=?, b.farmer=?, b.fisher=?, b.hunter=?, b.miner=?"
+					+ "WHERE a.user_id = b.user_id = c.id AND c.uuid = ?";
+			st = conn.prepareStatement(query);
+			st.setFloat(1, player.getJobsXP(JobType.ALCHEMIST));
+			st.setFloat(2, player.getJobsXP(JobType.BUILDER));
+			st.setFloat(3, player.getJobsXP(JobType.FARMER));
+			st.setFloat(4, player.getJobsXP(JobType.FISHER));
+			st.setFloat(5, player.getJobsXP(JobType.HUNTER));
+			st.setFloat(6, player.getJobsXP(JobType.MINER));
+			st.setInt(7, player.getJobsLevel(JobType.ALCHEMIST));
+			st.setInt(8, player.getJobsLevel(JobType.BUILDER));
+			st.setInt(9, player.getJobsLevel(JobType.FARMER));
+			st.setInt(10, player.getJobsLevel(JobType.FISHER));
+			st.setInt(11, player.getJobsLevel(JobType.HUNTER));
+			st.setInt(12, player.getJobsLevel(JobType.MINER));
+			st.setString(13, player.getUUID());
+			return (st.executeUpdate() == 0);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			// TODO: handle finally clause
+			close(st);
+		}
+		return false;
 	}
 
 	public PlayerProfile createProfile(String uuid){

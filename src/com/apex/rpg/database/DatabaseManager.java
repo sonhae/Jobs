@@ -15,5 +15,5 @@ public interface DatabaseManager {
 	public void removeLevel(String uuid, JobType type, int level);
 	public HashMap<String, PlayerProfile> loadProfiles();
 	public PlayerProfile loadProfile(String uuid);
-	public void saveProfile(PlayerProfile player);
+	public boolean saveProfile(PlayerProfile player);
 }

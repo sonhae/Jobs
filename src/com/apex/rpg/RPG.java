@@ -4,9 +4,33 @@ import java.util.HashMap;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.apex.rpg.config.ConfigManager;
+import com.apex.rpg.database.CacheManager;
+import com.apex.rpg.database.DatabaseManager;
+import com.apex.rpg.database.SqlManager;
 import com.apex.rpg.datatype.PlayerProfile;
 
 public class RPG extends JavaPlugin{
-	private HashMap<String, PlayerProfile> cache;
 	public static RPG pl;
+	private static DatabaseManager db;
+	
+	@Override
+	public void onDisable() {
+		// TODO Auto-generated method stub
+		super.onDisable();
+	}
+	@Override
+	public void onEnable() {
+		// TODO Auto-generated method stub
+		pl = this;
+		if (ConfigManager.USE_CACHE) {
+			db = new CacheManager();
+		} else {
+			db = new SqlManager();
+		}
+	}
+	public static DatabaseManager getDatabaseManager(){
+		return db;
+	}
+	
 }

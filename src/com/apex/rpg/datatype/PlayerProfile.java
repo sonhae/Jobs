@@ -1,5 +1,7 @@
 package com.apex.rpg.datatype;
 
+import java.util.UUID;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,19 +10,25 @@ import com.apex.rpg.config.ConfigManager;
 import com.apex.rpg.jobs.JobType;
 
 public class PlayerProfile {
+	private final String playerName;
 	private Map<JobType, Integer> jobLevel;
 	private Map<JobType, Float> jobXP;
 	private boolean changed;
 	
-	public PlayerProfile(Map<JobType, Integer> jobLevel, Map<JobType, Float> jobXP, String UUID) {
+	public PlayerProfile(Map<JobType, Integer> jobLevel, Map<JobType, Float> jobXP, String name, UUID UUID) {
 		super();
+		this.playerName = name;
 		this.jobLevel = jobLevel;
 		this.jobXP = jobXP;
 		this.UUID = UUID;
 		changed = false;
 	}
-	public PlayerProfile(String uuid){
+	public String getPlayerName() {
+		return playerName;
+	}
+	public PlayerProfile(String name, UUID uuid){
 		super();
+		this.playerName = name;
 		this.jobLevel = new HashMap<JobType, Integer>();
 		this.jobXP = new HashMap<JobType, Float>();
 		this.UUID = uuid;
@@ -29,10 +37,10 @@ public class PlayerProfile {
 			jobXP.put(j, 0f);
 		}
 	}
-	public String getUUID() {
+	public UUID getUUID() {
 		return UUID;
 	}
-	private String UUID;
+	private UUID UUID;
 
 	public float getJobsXP(JobType type){
 		return jobXP.get(type);

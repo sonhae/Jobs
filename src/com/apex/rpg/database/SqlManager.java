@@ -6,6 +6,7 @@ import java.sql.Statement;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import com.apex.rpg.RPG;
 import com.apex.rpg.config.ConfigManager;
@@ -16,7 +17,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class SqlManager implements DatabaseManager {
-	Connection conn = null;
+	private Connection conn = null;
 	private final String user;
 	private final String password;
 	private final String host;
@@ -85,7 +86,7 @@ public class SqlManager implements DatabaseManager {
 			st.setInt(10, player.getJobsLevel(JobType.FISHER));
 			st.setInt(11, player.getJobsLevel(JobType.HUNTER));
 			st.setInt(12, player.getJobsLevel(JobType.MINER));
-			st.setString(13, player.getUUID());
+			st.setString(13, player.getUUID().toString());
 			return (st.executeUpdate() == 0);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -97,22 +98,52 @@ public class SqlManager implements DatabaseManager {
 		return false;
 	}
 
-	public PlayerProfile createProfile(String uuid){
-		// TODO
-		return null;
+	public void createProfile(String name, UUID uuid){
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			String query = "INSERT INTO `"+ prefix + "users`(`name`, `uuid`) VALUES (?, ?)";
+			st = conn.prepareStatement(query);
+			st.setString(1, name);
+			st.setString(2, uuid.toString());
+			rs = st.getGeneratedKeys();
+			int a = rs.getInt(1);
+			st.close();
+			rs.close();
+			
+			st = conn.prepareStatement("INSERT INTO `"+prefix+ "experience`(`user_id`) VALUES (?)");
+			st.setInt(1, a);
+			st.executeUpdate();
+			st.close();
+			
+			st = conn.prepareStatement("INSERT INTO `"+prefix+ "levels`(`user_id`) VALUES (?)");
+			st.setInt(1, a);
+			st.executeUpdate();
+			st.close();
+			
+		} catch (SQLException e) {
+			
+		} 
 	}
-	public PlayerProfile loadProfile(String uuid) {
+	public PlayerProfile loadProfile(String name){
+		return loadProfile(name, null);
+	}
+	public PlayerProfile loadProfile(UUID uuid){
+		return loadProfile("", uuid);
+	}
+	public PlayerProfile loadProfile(String name, UUID uuid) {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
 			String query = "SELECT e.alchemist, e.builder, e.farmer, e.fisher, e.hunter, e.miner, "
-			+ "l.alchemist, l.builder, l.farmer, l.fisher, l.hunter, l.miner, u.uuid "
+			+ "l.alchemist, l.builder, l.farmer, l.fisher, l.hunter, l.miner, u.uuid, u.name"
 			+ "FROM jobs_users u "
 			+ "JOIN jobs_expreience e ON(e.user_id = u.id) "
 			+ "JOIN jobs_levels l ON(l.user_id = u.id) "
-			+ "WHERE u.name = ?";
+			+ "WHERE u.name = ? OR u.uuid = ?";
 			st = conn.prepareStatement(query);
-			st.setString(1, uuid);
+			st.setString(1, name);
+			st.setString(2, uuid.toString());
 			rs = st.executeQuery();
 			if (rs.next()){
 				return fromResultset(rs);
@@ -125,7 +156,8 @@ public class SqlManager implements DatabaseManager {
 			close(st);
 			close(rs);
 		}
-		return createProfile(uuid); 
+		createProfile(name, uuid);
+		return new PlayerProfile(name, uuid);
 	}
 	public HashMap<String, PlayerProfile> loadProfiles() {
 		Statement st = null;
@@ -133,7 +165,7 @@ public class SqlManager implements DatabaseManager {
 		HashMap<String, PlayerProfile> tempmap = new HashMap<String, PlayerProfile>();
 		try {
 			String query = "SELECT e.alchemist, e.builder, e.farmer, e.fisher, e.hunter, e.miner, "
-			+ "l.alchemist, l.builder, l.farmer, l.fisher, l.hunter, l.miner, u.uuid "
+			+ "l.alchemist, l.builder, l.farmer, l.fisher, l.hunter, l.miner, u.uuid, u.name"
 			+ "FROM jobs_users u "
 			+ "JOIN jobs_expreience e ON(e.user_id = u.id) "
 			+ "JOIN jobs_levels l ON(l.user_id = u.id)";
@@ -141,11 +173,11 @@ public class SqlManager implements DatabaseManager {
 			rs = st.executeQuery(query);
 			while (rs.next()){
 				PlayerProfile p = fromResultset(rs);
-				tempmap.put(p.getUUID(), p);
+				tempmap.put(p.getPlayerName(), p);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("mysql 접속 오류로 인하여 플러그인이 종료됩니다");
+			RPG.pl.getServer().getPluginManager().disablePlugin(RPG.pl);
 		} finally {
 			// TODO: handle finally clause
 			close(st);
@@ -158,7 +190,7 @@ public class SqlManager implements DatabaseManager {
 		final int xpoffset = 0;
 		final int leveloffset = 6;
 		final int uuidoffset = 12;
-	
+		final int nameoffset = 13;
 		Map<JobType, Integer> levels = new EnumMap<JobType, Integer>(JobType.class);
 		Map<JobType, Float> xps = new EnumMap<JobType, Float>(JobType.class);
 		
@@ -178,16 +210,16 @@ public class SqlManager implements DatabaseManager {
 		levels.put(JobType.HUNTER, set.getInt(leveloffset +4));
 		levels.put(JobType.MINER, set.getInt(leveloffset +5));
 		
-		return new PlayerProfile(levels, xps, set.getString(uuidoffset));
+		return new PlayerProfile(levels, xps, set.getString(nameoffset), UUID.fromString(set.getString(uuidoffset)));
 	}
 
-	public int getUserID(String uuid){
+	public int getUserID(String name, UUID uuid){
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
 			String query = "SELECT * FROM "+ prefix +"users WHERE uuid=?";
 			st = conn.prepareStatement(query);
-			st.setString(1, uuid);
+			st.setString(1, uuid.toString());
 			rs = st.executeQuery();
 			if (rs.next()){
 				return rs.getInt("id"); 
@@ -211,34 +243,5 @@ public class SqlManager implements DatabaseManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	public void addXP(String uuid, JobType type, float xp) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setXP(String uuid, JobType type, float xp) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void removeXP(String uuid, JobType type, float xp) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setLevel(String uuid, JobType type, int level) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void addLevel(String uuid, JobType type, int level) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void removeLevel(String uuid, JobType type, int level) {
-		// TODO Auto-generated method stub
-		
 	}
 }

@@ -1,6 +1,6 @@
 package com.apex.rpg.jobs;
 
-import com.apex.rpg.datatype.RPGPlayer;
+import com.apex.rpg.player.RPGPlayer;
 
 public class AlchemistManager extends JobManager{
 

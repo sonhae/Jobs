@@ -2,7 +2,7 @@ package com.apex.rpg.jobs;
 
 import org.bukkit.entity.Player;
 
-import com.apex.rpg.datatype.RPGPlayer;
+import com.apex.rpg.player.RPGPlayer;
 
 public abstract class JobManager {	
 	protected RPGPlayer player;

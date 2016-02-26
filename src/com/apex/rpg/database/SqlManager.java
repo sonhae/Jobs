@@ -10,7 +10,7 @@ import java.util.UUID;
 
 import com.apex.rpg.RPG;
 import com.apex.rpg.config.ConfigManager;
-import com.apex.rpg.datatype.PlayerProfile;
+import com.apex.rpg.player.PlayerProfile;
 import com.apex.rpg.jobs.JobType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

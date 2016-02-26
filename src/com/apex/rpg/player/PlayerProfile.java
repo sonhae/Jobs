@@ -1,4 +1,4 @@
-package com.apex.rpg.datatype;
+package com.apex.rpg.player;
 
 import java.util.UUID;
 

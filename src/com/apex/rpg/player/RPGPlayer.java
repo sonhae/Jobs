@@ -1,4 +1,4 @@
-package com.apex.rpg.datatype;
+package com.apex.rpg.player;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +14,7 @@ import com.apex.rpg.jobs.HunterManager;
 import com.apex.rpg.jobs.JobManager;
 import com.apex.rpg.jobs.JobType;
 import com.apex.rpg.jobs.MinerManager;
+import com.apex.rpg.player.PlayerProfile;
 
 public class RPGPlayer {
 	private Player player;

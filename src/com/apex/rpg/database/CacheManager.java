@@ -5,7 +5,7 @@ import java.util.UUID;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import com.apex.rpg.datatype.PlayerProfile;
+import com.apex.rpg.player.PlayerProfile;
 
 public class CacheManager implements DatabaseManager{
 

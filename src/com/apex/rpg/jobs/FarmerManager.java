@@ -1,5 +1,7 @@
 package com.apex.rpg.jobs;
 
+import org.bukkit.block.BlockState;
+
 import com.apex.rpg.player.RPGPlayer;
 
 public class FarmerManager extends JobManager{
@@ -9,10 +11,7 @@ public class FarmerManager extends JobManager{
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public void pay() {
-		// TODO Auto-generated method stub
+	public void checkXp(BlockState b){
 		
 	}
-
 }

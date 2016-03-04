@@ -1,5 +1,7 @@
 package com.apex.rpg.jobs;
 
+import org.bukkit.entity.Entity;
+
 import com.apex.rpg.player.RPGPlayer;
 
 public class FisherManager extends JobManager{
@@ -9,10 +11,7 @@ public class FisherManager extends JobManager{
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public void pay() {
-		// TODO Auto-generated method stub
+	public void checkXp(Entity fish){
 		
 	}
-
 }

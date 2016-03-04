@@ -3,6 +3,7 @@ package com.apex.rpg.player;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import com.apex.rpg.RPG;
@@ -23,25 +24,25 @@ public class RPGPlayer {
 	public RPGPlayer(Player player) {
 		super();
 		this.player = player;
+		this.profile = RPG.getDatabaseManager().loadProfile(player.getName());
 		try {
 			for (JobType j : JobType.values()){
 				jobmanagers.put(j, j.getManagerClass().getConstructor(PlayerProfile.class).newInstance(this));
 			}
 		}
 		catch (Exception e){
-			e.printStackTrace();
-			RPG.pl.getServer().getPluginManager().disablePlugin(RPG.pl);
+			System.out.println("플레이어 로딩 오류");
 		}
 		
 	}
 	public void checkLevelUp(JobType type){
-		if (profile.getJobsXP(type) < profile.getXpToLevelup(type)){
+		if (getJobsXP(type) < getXpToLevelup(type)){
 			return;
 		}
 		
 		int levelgained = 0;
 		
-		while (profile.getJobsXP(type) >= profile.getXpToLevelup(type)){
+		while (getJobsXP(type) >= getXpToLevelup(type)){
 			if (profile.reachedMaxLevel(type)) {
 				profile.setXp(type, 0.0f);
 				break;
@@ -49,14 +50,37 @@ public class RPGPlayer {
 			profile.levelUp(type);
 			levelgained++;
 		}
+		
+		player.sendMessage("§e"+type.getJobName() + "의 레벨이 " + levelgained + " 올라 " + getJobsLevel(type) + "레벨이 되었습니다");
+		player.playSound(player.getLocation(), Sound.LEVEL_UP, 0.75f, 0.5f);
 	}
 	public Player getPlayer() {
 		return player;
 	}
+	
+	public void xpGain(JobType type, float xp){
+		profile.addXp(type, xp * getXpRate() * RPG.xpRate);
+	}
+	
+	public float getXpRate(){
+		return profile.getXpRate();
+	}
+	public void setXpRate(float rate){
+		profile.setXpRate(rate);
+	}
+	public int getJobsLevel(JobType type){
+		return profile.getJobsLevel(type);
+	}
+	public float getXpToLevelup(JobType type){
+		return profile.getXpToLevelup(type);
+	}
+	public float getJobsXP(JobType type){
+		return profile.getJobsXP(type);
+	}
 	public PlayerProfile getProfile() {
 		return profile;
 	}
-	public AlchemistManager getAlchmeishManager(){
+	public AlchemistManager getAlchmeistManager(){
 		return (AlchemistManager) jobmanagers.get(JobType.ALCHEMIST);
 	}
 	public BuilderManager getBuilderManager(){

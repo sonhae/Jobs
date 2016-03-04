@@ -18,5 +18,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="H:/Minecraft/spigot187.jar"/>
 	<classpathentry kind="lib" path="C:/Users/shs86/Desktop/mcMMO.jar"/>
+	<classpathentry kind="lib" path="H:/Minecraft/plugin/plu/Vault.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

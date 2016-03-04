@@ -7,11 +7,6 @@ public class AlchemistManager extends JobManager{
 	public AlchemistManager(RPGPlayer player) {
 		super(player, JobType.ALCHEMIST);
 		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public void pay() {
-		// TODO Auto-generated method stub
 		
 	}
 

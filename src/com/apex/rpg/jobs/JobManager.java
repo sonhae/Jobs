@@ -19,8 +19,7 @@ public abstract class JobManager {
 	public int getJobsLevel(){
 		return player.getProfile().getJobsLevel(type);
 	}
-	public void giveXp(int xp){
-		
+	public void giveXp(float xp){
+		player.xpGain(type, xp);
 	}
-	public abstract void pay();
 }

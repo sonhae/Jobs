@@ -14,7 +14,14 @@ public class PlayerProfile {
 	private Map<JobType, Integer> jobLevel;
 	private Map<JobType, Float> jobXP;
 	private boolean changed;
+	private float xpRate;
 	
+	public float getXpRate() {
+		return xpRate;
+	}
+	public void setXpRate(float xpRate) {
+		this.xpRate = xpRate;
+	}
 	public PlayerProfile(Map<JobType, Integer> jobLevel, Map<JobType, Float> jobXP, String name, UUID UUID) {
 		super();
 		this.playerName = name;

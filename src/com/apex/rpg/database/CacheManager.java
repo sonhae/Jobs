@@ -9,6 +9,10 @@ import com.apex.rpg.player.PlayerProfile;
 
 public class CacheManager implements DatabaseManager{
 
+	public CacheManager() {
+		initialize();
+	}
+
 	private SqlManager sql;
 	private HashMap<String, PlayerProfile> cache;
 	private Executor exec;
@@ -17,6 +21,7 @@ public class CacheManager implements DatabaseManager{
 		// TODO Auto-generated method stub
 		sql = new SqlManager();
 		cache = sql.loadProfiles();
+		System.out.println(cache.size()+"명의 플레이어를 로딩중..");
 		exec = Executors.newCachedThreadPool();
 	}
 
@@ -35,13 +40,19 @@ public class CacheManager implements DatabaseManager{
 		return loadProfile("", uuid);
 	}
 
-	public PlayerProfile loadProfile(String name, UUID uuid) {
+	public PlayerProfile loadProfile(final String name, final UUID uuid) {
 		if (cache.containsKey(name)) return cache.get(name);
-		for (PlayerProfile p : cache.values()){
-			if (p.getUUID().equals(uuid)) return p;
+		if (uuid != null){
+			for (PlayerProfile p : cache.values()){
+				if (p.getUUID().equals(uuid)) return p;
+			}
 		}
-		createProfile(name, uuid);
-		return cache.put(name, new PlayerProfile(name, uuid));
+		exec.execute(new Runnable() {
+			public void run() {
+				cache.put(name, sql.loadProfile(name, uuid));
+			}
+		});
+		return cache.get(name);
 	}
 
 	public boolean saveProfile(final PlayerProfile player) {

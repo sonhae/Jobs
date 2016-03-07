@@ -18,10 +18,7 @@ public class UserManager {
 		return null;
 	}
 	public static RPGPlayer getPlayer(Player player){
-		if (player != null){
 			return (RPGPlayer) player.getMetadata("jobs").get(0).value();
-		}
-		return null;
 	}
 	public static RPGPlayer getPlayer(String name){
 		Player p = Bukkit.getPlayerExact(name);
@@ -38,7 +35,7 @@ public class UserManager {
 	}
 	
 	public static void setup(Player p){
-		RPGPlayer r = new RPGPlayer(p);
+		RPGPlayer r = new RPGPlayer(p, RPG.getDatabaseManager().loadProfile(p.getName(), p.getUniqueId()));
 		p.setMetadata("jobs", new FixedMetadataValue(RPG.pl, r));
 	}
 	

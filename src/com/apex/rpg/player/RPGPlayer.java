@@ -6,7 +6,7 @@ import java.util.Map;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
-import com.apex.rpg.RPG;
+import com.apex.rpg.event.EventManager;
 import com.apex.rpg.jobs.AlchemistManager;
 import com.apex.rpg.jobs.BuilderManager;
 import com.apex.rpg.jobs.FarmerManager;
@@ -21,16 +21,20 @@ public class RPGPlayer {
 	private Player player;
 	private PlayerProfile profile;
 	private final Map<JobType, JobManager> jobmanagers = new HashMap<JobType, JobManager>();
-	public RPGPlayer(Player player) {
+	private float xpRate;
+	private long xpRateDue;
+	
+	public RPGPlayer(Player player, PlayerProfile p) {
 		super();
 		this.player = player;
-		this.profile = RPG.getDatabaseManager().loadProfile(player.getName());
+		this.profile = p;
 		try {
 			for (JobType j : JobType.values()){
-				jobmanagers.put(j, j.getManagerClass().getConstructor(PlayerProfile.class).newInstance(this));
+				jobmanagers.put(j, j.getManagerClass().getConstructor(RPGPlayer.class).newInstance(this));
 			}
 		}
 		catch (Exception e){
+			e.printStackTrace();
 			System.out.println("플레이어 로딩 오류");
 		}
 		
@@ -50,7 +54,7 @@ public class RPGPlayer {
 			profile.levelUp(type);
 			levelgained++;
 		}
-		
+		EventManager.handleLevelUp(this, type, levelgained);
 		player.sendMessage("§e"+type.getJobName() + "의 레벨이 " + levelgained + " 올라 " + getJobsLevel(type) + "레벨이 되었습니다");
 		player.playSound(player.getLocation(), Sound.LEVEL_UP, 0.75f, 0.5f);
 	}
@@ -58,15 +62,29 @@ public class RPGPlayer {
 		return player;
 	}
 	
-	public void xpGain(JobType type, float xp){
-		profile.addXp(type, xp * getXpRate() * RPG.xpRate);
+	public void xpGain(JobType type, float d){
+		if (!EventManager.handleXpGain(this, type, d)){
+			return;
+		}
+		checkLevelUp(type);
 	}
 	
-	public float getXpRate(){
-		return profile.getXpRate();
+	public boolean isRateExpired(){
+		return System.currentTimeMillis() >= xpRateDue;
 	}
-	public void setXpRate(float rate){
-		profile.setXpRate(rate);
+	
+	public float getXpRate() {
+		return xpRate;
+	}
+	public void setXpRate(float xpRate) {
+		this.xpRate = xpRate;
+	}
+	public long getXpRateDue() {
+		return xpRateDue;
+	}
+
+	public void setXpRateDue(long xpRateDue) {
+		this.xpRateDue = xpRateDue;
 	}
 	public int getJobsLevel(JobType type){
 		return profile.getJobsLevel(type);

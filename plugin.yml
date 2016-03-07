@@ -1,0 +1,4 @@
+﻿name: Jobs
+main: com.apex.rpg.RPG
+version: 1.0
+commands:

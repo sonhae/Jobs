@@ -8,9 +8,9 @@ import org.bukkit.entity.Player;
 import com.apex.rpg.jobs.JobType;
 
 public class ScoreboardManager {
-	static final String LEVEL_XP = "남은 XP";
-    static final String CURRENT_XP = "현재 XP";
-	static final String CURRENT_LEVEL = "현재 레벨";
+	static final String LEVEL_XP = "§e남은 XP";
+    static final String CURRENT_XP = "§a현재 XP";
+	static final String CURRENT_LEVEL = "§3현재 레벨";
 	static final Map<String, UserScoreboard> PLAYER_BOARDS = new HashMap<String, UserScoreboard>();
 	
 	
@@ -36,15 +36,35 @@ public class ScoreboardManager {
 		}
 		
 	}
+	public static void handleLevelUp(Player p, JobType job){
+		UserScoreboard u = PLAYER_BOARDS.get(p.getName());
+		if (u.isBoardShown() && ((u.isJobStatBoard() && u.equalsJobType(job)) || u.isJobAllStatsBoard())){
+			u.updateSoon();
+		}
+		showPlayerStat(p, job);
+	}
+	
+	public static void handleXpGain(Player p, JobType job){
+		UserScoreboard u = PLAYER_BOARDS.get(p.getName());
+		if (u.isBoardShown() && ((u.isJobStatBoard() && u.equalsJobType(job)) || u.isJobAllStatsBoard())){
+			u.updateSoon();
+		}
+	}
 	
 	public static void showPlayerStat(Player p, JobType job){
 		UserScoreboard u = PLAYER_BOARDS.get(p.getName());
+		
+		if (u.isBoardShown()) return;
+		
 		u.setTmpBoard();
 		u.setStats(job);
 		changeBoard(u, 10);
 	}
 	public static void showPlayerAllstats(Player p, JobType job){
 		UserScoreboard u = PLAYER_BOARDS.get(p.getName());
+		
+		if (u.isBoardShown()) return;
+		
 		u.setTmpBoard();
 		u.setAllStats();
 		changeBoard(u, 10);

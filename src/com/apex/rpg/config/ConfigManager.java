@@ -17,11 +17,15 @@ public class ConfigManager {
 		MYSQL_PASSWORD = config.getString("database.password");
 		MYSQL_USER = config.getString("database.user");
 		MYSQL_PORT = config.getString("database.port");
+		MYSQL_DATABASE = config.getString("database.db");
+		MYSQL_PREFIX = config.getString("database.prefix");
+		MAX_LEVEL = config.getInt("jobsetting.maxlevel");
+		USE_CACHE = config.getBoolean("database.useCache");
 	}
 
-	public static double getXp(JobType job, String value){
+	public static float getXp(JobType job, String value){
 		String path = job.toString() + "." + value + ".xp";
-		return config.getDouble(path, -1);
+		return (float) config.getDouble(path, -1);
 	}
 	public static double getWithdrawAmount(JobType job, String value){
 		String path = job.toString() + "." + value + ".withdraw";

@@ -1,0 +1,14 @@
+database:
+  host:
+  user:
+  password:
+  port:
+  useCache:
+
+jobsetting:
+  maxlevel: 100
+  
+MINER:
+  STONE:
+    amount: 2
+    xp: 10 

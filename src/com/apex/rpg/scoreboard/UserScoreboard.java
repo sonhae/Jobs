@@ -41,12 +41,16 @@ public class UserScoreboard {
 		}
 		
 	}
+	public boolean equalsJobType(JobType job){
+		return jobType == job;
+	}
 	public void setStats(JobType job){
 		jobType = job;
 		boardType = BoardType.STAT;
 		newObjective(job.getJobName());
 	}
 	public void setAllStats(){
+		jobType = null;
 		boardType = BoardType.ALLSTATS;
 		newObjective("³» Á¤º¸");
 	}
@@ -108,6 +112,20 @@ public class UserScoreboard {
 		statObj.setDisplayName(displayname);
 		updateScoreboard();
 		statObj.setDisplaySlot(DisplaySlot.SIDEBAR);
+	}
+	public boolean isBoardShown(){
+		Player p = Bukkit.getPlayer(playerName);
+		if (p == null){
+			ScoreboardManager.clear(this);
+			return false;
+		}
+		return p.getScoreboard() == board;
+	}
+	public boolean isJobStatBoard(){
+		return boardType == BoardType.STAT;
+	}
+	public boolean isJobAllStatsBoard(){
+		return boardType == BoardType.ALLSTATS;
 	}
 	public void updateScoreboard(){
 		try {

@@ -13,9 +13,11 @@ import org.bukkit.event.player.PlayerFishEvent;
 
 import com.apex.rpg.player.RPGPlayer;
 import com.apex.rpg.player.UserManager;
+import com.mysql.jdbc.V1toV2StatementInterceptorAdapter;
 
 public class BlockListener implements Listener{
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onPlayerBreak(BlockBreakEvent e){
 		Block b = e.getBlock();
 		
@@ -29,11 +31,11 @@ public class BlockListener implements Listener{
 	}
 	@EventHandler
 	public void onPlayerFish(PlayerFishEvent e){
+	
 		if (e.isCancelled()) return;
 		Entity fish = e.getCaught();
+		if (!e.getPlayer().hasMetadata("jobs") || e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
 		RPGPlayer p = UserManager.getPlayer(e.getPlayer());
-		
-		if (p == null || e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
 		
 			//³¬½Ã
 			if (p.getPlayer().hasPermission("jobs.user")){
@@ -46,9 +48,9 @@ public class BlockListener implements Listener{
 	public void onPlayerPlace(BlockPlaceEvent e){
 		if (e.isCancelled()) return;
 		Block b = e.getBlock();
+
+		if (!e.getPlayer().hasMetadata("jobs") || e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
 		RPGPlayer p = UserManager.getPlayer(e.getPlayer());
-		
-		if (p == null || e.getPlayer().getGameMode() != GameMode.CREATIVE) return;
 		
 		// ºô´õ
 			if (p.getPlayer().hasPermission("jobs.user")){

@@ -31,7 +31,9 @@ public class PlayerLevelUpEvent extends Event{
 	public int getLevel(){
 		return player.getJobsLevel(job);
 	}
-	
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
 	@Override
 	public HandlerList getHandlers() {
 		// TODO Auto-generated method stub

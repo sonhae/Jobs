@@ -5,7 +5,8 @@ import org.bukkit.block.Block;
 import com.apex.rpg.RPG;
 import com.apex.rpg.config.ConfigManager;
 import com.apex.rpg.player.RPGPlayer;
-import com.gmail.nossr50.mcMMO;
+
+import net.coreprotect.database.Lookup;
 
 public class MinerManager extends JobManager{
 
@@ -16,10 +17,9 @@ public class MinerManager extends JobManager{
 	
 	public void checkXp(Block b){
 		String key = b.getType() + ":" + b.getData();
-		if (!mcMMO.getPlaceStore().isTrue(b) && ConfigManager.contains(type, key)){
-			RPG.getEconomyManager().deposit(player, type, key);
+		if (Lookup.who_placed_cache(b).isEmpty() && ConfigManager.contains(type, key)){
+			RPG.getEconomyManager().pay(player, type, key, false);
 			player.xpGain(type, ConfigManager.getXp(type, key));
-			
 		}
 	}
 }

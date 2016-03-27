@@ -48,8 +48,9 @@ public class PlayerXpGainEvent extends Event implements Cancellable{
 		// TODO Auto-generated method stub
 		this.cancelled = arg0;
 	}
-
-	
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
 	
 	@Override
 	public HandlerList getHandlers() {

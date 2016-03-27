@@ -9,7 +9,7 @@ public class ConfigManager {
 	private static FileConfiguration config;
 	public static String MYSQL_HOST, MYSQL_PASSWORD, MYSQL_USER, MYSQL_DATABASE, MYSQL_PORT, MYSQL_PREFIX;
 	public static int MAX_LEVEL;
-	public static boolean USE_CACHE;	
+	public static boolean USE_CACHE, USE_BUFFERED_PAY;
 	
 	static {
 		config = RPG.pl.getConfig();
@@ -21,15 +21,12 @@ public class ConfigManager {
 		MYSQL_PREFIX = config.getString("database.prefix");
 		MAX_LEVEL = config.getInt("jobsetting.maxlevel");
 		USE_CACHE = config.getBoolean("database.useCache");
+		USE_BUFFERED_PAY = config.getBoolean("jobsetting.useBufferedPay");
 	}
 
 	public static float getXp(JobType job, String value){
 		String path = job.toString() + "." + value + ".xp";
 		return (float) config.getDouble(path, -1);
-	}
-	public static double getWithdrawAmount(JobType job, String value){
-		String path = job.toString() + "." + value + ".withdraw";
-		return config.getDouble(path, -1);
 	}
 	public static double getAmount(JobType job, String value){
 		String path = job.toString() + "." + value + ".amount";

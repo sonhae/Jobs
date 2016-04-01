@@ -7,7 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 
-import com.apex.rpg.player.RPGPlayer;
+import com.apex.rpg.datatype.player.RPGPlayer;
 import com.apex.rpg.player.UserManager;
 
 public class EntityListener implements Listener{
@@ -17,7 +17,7 @@ public class EntityListener implements Listener{
 		Player killer = died.getKiller();
 		if (killer == null || killer.hasMetadata("jobs") || killer.getGameMode() != GameMode.CREATIVE) return;
 		RPGPlayer p = UserManager.getPlayer(killer);
-		//³¬½Ã
+		//ï¿½ï¿½ï¿½ï¿½
 		if (p.getPlayer().hasPermission("jobs.user")){
 			p.getHunterManager().checkXp(e.getEntityType());
 		}

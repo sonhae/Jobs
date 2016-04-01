@@ -3,8 +3,8 @@ package com.apex.rpg.event;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import com.apex.rpg.jobs.JobType;
-import com.apex.rpg.player.RPGPlayer;
+import com.apex.rpg.datatype.jobs.JobType;
+import com.apex.rpg.datatype.player.RPGPlayer;
 
 public class PlayerLevelUpEvent extends Event{
 

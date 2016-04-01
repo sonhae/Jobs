@@ -10,8 +10,9 @@ import java.util.UUID;
 
 import com.apex.rpg.RPG;
 import com.apex.rpg.config.ConfigManager;
-import com.apex.rpg.player.PlayerProfile;
-import com.apex.rpg.jobs.JobType;
+import com.apex.rpg.datatype.jobs.JobType;
+import com.apex.rpg.datatype.player.PlayerProfile;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -62,7 +63,7 @@ public class SqlManager implements DatabaseManager {
 			st.executeUpdate(query);
 		} catch (Exception e){
 			e.printStackTrace();
-			System.out.println("mysql Á¢¼Ó ¿À·ù·Î ÀÎÇÏ¿© ÇÃ·¯±×ÀÎÀÌ Á¾·áµË´Ï´Ù");
+			System.out.println("mysql ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½Ã·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ë´Ï´ï¿½");
 			RPG.pl.getServer().getPluginManager().disablePlugin(RPG.pl);
 		} finally {
 			close(st);
@@ -188,12 +189,11 @@ public class SqlManager implements DatabaseManager {
 			rs = st.executeQuery(query);
 			while (rs.next()){
 				PlayerProfile p = fromResultset(rs);
-				System.out.println(p.getPlayerName());
 				tempmap.put(p.getPlayerName(), p);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println("mysql Á¢¼Ó ¿À·ù·Î ÀÎÇÏ¿© ÇÃ·¯±×ÀÎÀÌ Á¾·áµË´Ï´Ù");
+			RPG.pl.getLogger().severe("mysql ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½Ã·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ë´Ï´ï¿½");
 			RPG.pl.getServer().getPluginManager().disablePlugin(RPG.pl);
 		} finally {
 			// TODO: handle finally clause
@@ -211,7 +211,7 @@ public class SqlManager implements DatabaseManager {
 		Map<JobType, Integer> levels = new EnumMap<JobType, Integer>(JobType.class);
 		Map<JobType, Float> xps = new EnumMap<JobType, Float>(JobType.class);
 		
-		//xp Á¤º¸ ÀÔ·Â
+		//xp ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½
 		xps.put(JobType.ALCHEMIST, set.getFloat(xpoffset));
 		xps.put(JobType.BUILDER, set.getFloat(xpoffset +1));
 		xps.put(JobType.FARMER, set.getFloat(xpoffset + 2));
@@ -219,7 +219,7 @@ public class SqlManager implements DatabaseManager {
 		xps.put(JobType.HUNTER, set.getFloat(xpoffset +4));
 		xps.put(JobType.MINER, set.getFloat(xpoffset +5));
 		
-		//level Á¤º¸ ÀÔ·Â
+		//level ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½
 		levels.put(JobType.ALCHEMIST, set.getInt(leveloffset));
 		levels.put(JobType.BUILDER, set.getInt(leveloffset +1));
 		levels.put(JobType.FARMER, set.getInt(leveloffset + 2));

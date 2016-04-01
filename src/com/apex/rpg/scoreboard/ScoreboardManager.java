@@ -5,16 +5,16 @@ import java.util.Map;
 
 import org.bukkit.entity.Player;
 
-import com.apex.rpg.jobs.JobType;
+import com.apex.rpg.datatype.jobs.JobType;
 
 public class ScoreboardManager {
-	static final String LEVEL_XP = "¡×e³²Àº XP";
-    static final String CURRENT_XP = "¡×aÇöÀç XP";
-	static final String CURRENT_LEVEL = "¡×3ÇöÀç ·¹º§";
+	static final String LEVEL_XP = "ï¿½ï¿½eï¿½ï¿½ï¿½ï¿½ XP";
+    static final String CURRENT_XP = "ï¿½ï¿½aï¿½ï¿½ï¿½ï¿½ XP";
+	static final String CURRENT_LEVEL = "ï¿½ï¿½3ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½";
 	static final Map<String, UserScoreboard> PLAYER_BOARDS = new HashMap<String, UserScoreboard>();
 	
 	
-	//playerjoinevent¿¡¼­ È£Ãâ.
+	//playerjoineventï¿½ï¿½ï¿½ï¿½ È£ï¿½ï¿½.
 	public static void setup(Player p){
 		PLAYER_BOARDS.put(p.getName(), new UserScoreboard(p.getName()));
 	}
@@ -27,7 +27,7 @@ public class ScoreboardManager {
 		}
 	}
 	
-	//playerquitevent¿¡¼­ È£Ãâ.
+	//playerquiteventï¿½ï¿½ï¿½ï¿½ È£ï¿½ï¿½.
 	public static void logout(Player p){
 		UserScoreboard u = PLAYER_BOARDS.remove(p.getName());
 		

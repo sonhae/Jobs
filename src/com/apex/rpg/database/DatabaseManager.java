@@ -3,7 +3,7 @@ package com.apex.rpg.database;
 import java.util.HashMap;
 import java.util.UUID;
 
-import com.apex.rpg.player.PlayerProfile;
+import com.apex.rpg.datatype.player.PlayerProfile;
 
 public interface DatabaseManager {
 	public void initialize();

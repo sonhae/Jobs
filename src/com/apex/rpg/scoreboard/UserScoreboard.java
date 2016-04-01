@@ -9,8 +9,8 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
 import com.apex.rpg.RPG;
-import com.apex.rpg.jobs.JobType;
-import com.apex.rpg.player.RPGPlayer;
+import com.apex.rpg.datatype.jobs.JobType;
+import com.apex.rpg.datatype.player.RPGPlayer;
 import com.apex.rpg.player.UserManager;
 
 public class UserScoreboard {
@@ -52,7 +52,7 @@ public class UserScoreboard {
 	public void setAllStats(){
 		jobType = null;
 		boardType = BoardType.ALLSTATS;
-		newObjective("³» Á¤º¸");
+		newObjective("ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
 	}
 	public void show(){
 		show(0);

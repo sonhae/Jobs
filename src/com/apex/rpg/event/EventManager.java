@@ -2,8 +2,8 @@ package com.apex.rpg.event;
 
 import org.bukkit.Bukkit;
 
-import com.apex.rpg.jobs.JobType;
-import com.apex.rpg.player.RPGPlayer;
+import com.apex.rpg.datatype.jobs.JobType;
+import com.apex.rpg.datatype.player.RPGPlayer;
 
 public class EventManager {
 	public static boolean handleXpGain(RPGPlayer p, JobType job, float xp){

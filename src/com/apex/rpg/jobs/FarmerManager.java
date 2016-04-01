@@ -1,7 +1,8 @@
 package com.apex.rpg.jobs;
 
-import org.bukkit.block.Block;
-import com.apex.rpg.player.RPGPlayer;
+import com.apex.rpg.datatype.action.BlockActionInfo;
+import com.apex.rpg.datatype.jobs.JobType;
+import com.apex.rpg.datatype.player.RPGPlayer;
 
 public class FarmerManager extends JobManager{
 
@@ -10,8 +11,8 @@ public class FarmerManager extends JobManager{
 		// TODO Auto-generated constructor stub
 	}
 
-	public void checkXp(Block b) {
+	public void checkXp(BlockActionInfo b) {
 		// TODO Auto-generated method stub
-		
+		b.setData(true);
 	}
 }

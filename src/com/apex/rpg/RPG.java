@@ -35,9 +35,15 @@ public class RPG extends JavaPlugin{
 	public void onEnable() {
 		this.saveDefaultConfig();
 		pl = this;
+		if (hookEconomy()){
+			getLogger().info("Vault í›„í‚¹ë¨");
+		} else{
+			getLogger().severe("Vault í›„í‚¹ì— ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤.í”ŒëŸ¬ê·¸ì¸ì„ ì¢…ë£Œí•©ë‹ˆë‹¤");
+			Bukkit.getPluginManager().disablePlugin(this);
+			return;
+		}
 		setupDatabase();
 		registerEvents();
-		hookEconomy();
 		for (Player p : Bukkit.getOnlinePlayers()){
 			UserManager.setup(p);
 			ScoreboardManager.setup(p);
@@ -56,16 +62,12 @@ public class RPG extends JavaPlugin{
 			db = new SqlManager();
 		}
 	}
-	public void hookEconomy(){
+	public boolean hookEconomy(){
 		if (Bukkit.getPluginManager().getPlugin("Vault") != null){
 			econ = ConfigManager.USE_BUFFERED_PAY ? new BufferedManager() : new VaultManager();
-			if (!econ.setupEconomy()){
-				System.out.println("Vault ÈÄÅ·¿¡ ½ÇÆĞÇÏ¿´½À´Ï´Ù. ÇÃ·¯±×ÀÎÀ» Á¾·áÇÕ´Ï´Ù.");
-				this.getServer().getPluginManager().disablePlugin(RPG.pl);
-			} else {
-				System.out.println("Vault ÈÄÅ· ¼º°ø");
-			}
+			return econ.setupEconomy();
 		}
+		return false;
 	}
 	public void registerEvents(){
 		Bukkit.getPluginManager().registerEvents(new BlockListener(), this);

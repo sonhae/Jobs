@@ -1,7 +1,9 @@
 package com.apex.rpg.jobs;
 
 import org.bukkit.block.Block;
-import com.apex.rpg.player.RPGPlayer;
+
+import com.apex.rpg.datatype.jobs.JobType;
+import com.apex.rpg.datatype.player.RPGPlayer;
 
 public class BuilderManager extends JobManager {
 

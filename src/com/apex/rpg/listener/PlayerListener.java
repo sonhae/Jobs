@@ -5,7 +5,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import com.apex.rpg.player.RPGPlayer;
+import com.apex.rpg.datatype.player.RPGPlayer;
 import com.apex.rpg.player.UserManager;
 import com.apex.rpg.scoreboard.ScoreboardManager;
 

@@ -11,9 +11,10 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 
-import com.apex.rpg.player.RPGPlayer;
+import com.apex.rpg.datatype.action.BlockActionInfo;
+import com.apex.rpg.datatype.action.ActionInfo.Actions;
+import com.apex.rpg.datatype.player.RPGPlayer;
 import com.apex.rpg.player.UserManager;
-import com.mysql.jdbc.V1toV2StatementInterceptorAdapter;
 
 public class BlockListener implements Listener{
 
@@ -23,10 +24,11 @@ public class BlockListener implements Listener{
 		
 		if (!e.getPlayer().hasMetadata("jobs") || e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
 		RPGPlayer p = UserManager.getPlayer(e.getPlayer());
-		// ³ó»ç, Ã¤±¤
+		// ï¿½ï¿½ï¿½, Ã¤ï¿½ï¿½
 			if (p.getPlayer().hasPermission("jobs.user")){
-				p.getFarmerManager().checkXp(b);	
-				p.getMinerManager().checkXp(b);
+				BlockActionInfo a = new BlockActionInfo(Actions.BREAK, b);
+				p.getFarmerManager().checkXp(a);	
+				p.getMinerManager().checkXp(a);
 			}		
 	}
 	@EventHandler
@@ -37,7 +39,7 @@ public class BlockListener implements Listener{
 		if (!e.getPlayer().hasMetadata("jobs") || e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
 		RPGPlayer p = UserManager.getPlayer(e.getPlayer());
 		
-			//³¬½Ã
+			//ï¿½ï¿½ï¿½ï¿½
 			if (p.getPlayer().hasPermission("jobs.user")){
 				p.getFisherManager().checkXp(fish);
 			}
@@ -52,7 +54,8 @@ public class BlockListener implements Listener{
 		if (!e.getPlayer().hasMetadata("jobs") || e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
 		RPGPlayer p = UserManager.getPlayer(e.getPlayer());
 		
-		// ºô´õ
+		// ï¿½ï¿½ï¿½ï¿½
+		BlockActionInfo a = new BlockActionInfo(Actions.PLACE, b);
 			if (p.getPlayer().hasPermission("jobs.user")){
 				p.getBuilderManager().checkXp(b);
 			}	

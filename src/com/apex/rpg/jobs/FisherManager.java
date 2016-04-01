@@ -2,7 +2,8 @@ package com.apex.rpg.jobs;
 
 import org.bukkit.entity.Entity;
 
-import com.apex.rpg.player.RPGPlayer;
+import com.apex.rpg.datatype.jobs.JobType;
+import com.apex.rpg.datatype.player.RPGPlayer;
 
 public class FisherManager extends JobManager{
 

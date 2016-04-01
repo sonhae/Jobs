@@ -5,7 +5,8 @@ import java.util.UUID;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import com.apex.rpg.player.PlayerProfile;
+import com.apex.rpg.RPG;
+import com.apex.rpg.datatype.player.PlayerProfile;
 
 public class CacheManager implements DatabaseManager{
 
@@ -21,7 +22,7 @@ public class CacheManager implements DatabaseManager{
 		// TODO Auto-generated method stub
 		sql = new SqlManager();
 		cache = sql.loadProfiles();
-		System.out.println(cache.size()+"¸íÀÇ ÇÃ·¹ÀÌ¾î¸¦ ·ÎµùÁß..");
+		RPG.pl.getLogger().info(cache.size()+"ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î¸¦ ï¿½Îµï¿½ï¿½ï¿½..");
 		exec = Executors.newCachedThreadPool();
 	}
 
@@ -64,7 +65,7 @@ public class CacheManager implements DatabaseManager{
 				}
 			});	
 		} catch (Exception e){
-			System.out.println("ÇÃ·¹ÀÌ¾î ÀúÀå ¿À·ù.");
+			RPG.pl.getLogger().info("ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.");
 			return false;
 		}
 		return true;

@@ -1,10 +1,9 @@
 package com.apex.rpg.jobs;
 
-import org.bukkit.block.Block;
-
-import com.apex.rpg.RPG;
 import com.apex.rpg.config.ConfigManager;
-import com.apex.rpg.player.RPGPlayer;
+import com.apex.rpg.datatype.action.BlockActionInfo;
+import com.apex.rpg.datatype.jobs.JobType;
+import com.apex.rpg.datatype.player.RPGPlayer;
 
 import net.coreprotect.database.Lookup;
 
@@ -15,11 +14,10 @@ public class MinerManager extends JobManager{
 		// TODO Auto-generated constructor stub
 	}
 	
-	public void checkXp(Block b){
-		String key = b.getType() + ":" + b.getData();
-		if (Lookup.who_placed_cache(b).isEmpty() && ConfigManager.contains(type, key)){
-			RPG.getEconomyManager().pay(player, type, key, false);
-			player.xpGain(type, ConfigManager.getXp(type, key));
+	public void checkXp(BlockActionInfo action){
+		if ((!ConfigManager.HOOK_COREPROTECT || Lookup.who_placed_cache(action.getBlock()).isEmpty()) && ConfigManager.contains(type, action)){
+			pay(action);
+			giveXp(action);
 		}
 	}
 }

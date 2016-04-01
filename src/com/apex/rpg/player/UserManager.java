@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import com.apex.rpg.RPG;
+import com.apex.rpg.datatype.player.RPGPlayer;
 
 public class UserManager {
 	
